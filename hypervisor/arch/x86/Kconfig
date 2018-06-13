@@ -112,3 +112,6 @@ config UEFI_OS_LOADER_NAME
 	string "UEFI OS loader name"
 	depends on PLATFORM_UEFI
 	default "\\EFI\\org.clearlinux\\bootloaderx64.efi"
+config REMAIN_1G_PAGES
+	int
+	default 1
