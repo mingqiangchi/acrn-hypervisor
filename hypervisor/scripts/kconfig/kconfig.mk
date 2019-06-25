@@ -65,15 +65,16 @@ $(HV_OBJDIR)/$(HV_CONFIG_MK): $(HV_OBJDIR)/$(HV_CONFIG)
 
 $(HV_OBJDIR)/$(HV_CONFIG_H): $(HV_OBJDIR)/$(HV_CONFIG)
 	@mkdir -p $(dir $@)
-	@python3 $(KCONFIG_DIR)/generate_header.py Kconfig $< $@
+	@HV_ROOT_DIR=$(BASEDIR) \
+	 python3 $(KCONFIG_DIR)/generate_header.py $(BASEDIR)/Kconfig $< $@
 
 # This target forcefully generate a .config based on a given default
 # one. Overwrite the current .config if it exists.
 .PHONY: defconfig
 defconfig: $(KCONFIG_DEPS)
 	@mkdir -p $(HV_OBJDIR)
-	@BOARD=$(TARGET_BOARD) \
-	 python3 $(KCONFIG_DIR)/defconfig.py Kconfig \
+	@BOARD=$(TARGET_BOARD) HV_ROOT_DIR=$(BASEDIR)\
+	 python3 $(KCONFIG_DIR)/defconfig.py $(BASEDIR)/Kconfig \
 		$(HV_OBJDIR)/$(HV_CONFIG)
 
 # Use silentoldconfig to forcefully update the current .config, or generate a
@@ -83,8 +84,8 @@ defconfig: $(KCONFIG_DEPS)
 .PHONY: oldconfig
 oldconfig: $(KCONFIG_DEPS)
 	@mkdir -p $(HV_OBJDIR)
-	@BOARD=$(TARGET_BOARD) \
-	 python3 $(KCONFIG_DIR)/silentoldconfig.py Kconfig \
+	@BOARD=$(TARGET_BOARD) HV_ROOT_DIR=$(BASEDIR)\
+	 python3 $(KCONFIG_DIR)/silentoldconfig.py $(BASEDIR)/Kconfig \
 		$(HV_OBJDIR)/$(HV_CONFIG) \
 		RELEASE=$(RELEASE)
 
@@ -92,13 +93,15 @@ oldconfig: $(KCONFIG_DEPS)
 # for future use.
 .PHONY: savedefconfig
 savedefconfig: $(HV_OBJDIR)/$(HV_CONFIG)
-	@python3 $(KCONFIG_DIR)/savedefconfig.py Kconfig \
+	@HV_ROOT_DIR=$(BASEDIR) \
+	 python3 $(KCONFIG_DIR)/savedefconfig.py $(BASEDIR)/Kconfig \
 		$(HV_OBJDIR)/$(HV_CONFIG) \
 		$(HV_OBJDIR)/$(HV_DEFCONFIG)
 
 $(eval $(call check_dep_exec,menuconfig,MENUCONFIG_DEPS))
 export KCONFIG_CONFIG := $(HV_OBJDIR)/$(HV_CONFIG)
 menuconfig: $(MENUCONFIG_DEPS) $(HV_OBJDIR)/$(HV_CONFIG)
-	@python3 $(shell which menuconfig) Kconfig
+	@HV_ROOT_DIR=$(BASEDIR) \
+	 python3 $(shell which menuconfig) $(BASEDIR)/Kconfig
 
 CFLAGS += -include $(HV_OBJDIR)/$(HV_CONFIG_H)

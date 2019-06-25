@@ -47,6 +47,7 @@ content:
 
 kconfig:
 	$(Q)srctree=../hypervisor \
+	    HV_ROOT_DIR="$(CURDIR)/../hypervisor" \
 	    python3 scripts/genrest.py Kconfig reference/kconfig/
 
 pullsource:

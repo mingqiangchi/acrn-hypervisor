@@ -45,8 +45,7 @@ config BOARD
 config DEFCONFIG_LIST
 	string
 	option defconfig_list
-	default "arch/x86/configs/$BOARD.config"
-
+	default "$(HV_ROOT_DIR)/arch/x86/configs/$BOARD.config"
 config RELEASE
 	bool "Release build"
 	default n
