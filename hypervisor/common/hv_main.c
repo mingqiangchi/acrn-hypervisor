@@ -21,6 +21,8 @@ void vcpu_thread(struct sched_object *obj)
 	uint32_t basic_exit_reason = 0U;
 	int32_t ret = 0;
 
+	pr_err("vcpu_thread pcpu_id = 0x%llx\r\n", get_pcpu_id());
+
 	do {
 		/* If vcpu is not launched, we need to do init_vmcs first */
 		if (!vcpu->launched) {
@@ -84,6 +86,7 @@ void default_idle(__unused struct sched_object *obj)
 
 	while (1) {
 		if (need_reschedule(pcpu_id)) {
+		        pr_err("need schedule pcpu_id=0x%lx\r\n", pcpu_id);
 			schedule();
 		} else if (need_offline(pcpu_id)) {
 			cpu_dead();

@@ -321,7 +321,7 @@ static void prepare_sos_vm_memmap(struct acrn_vm *vm)
 	uint16_t vm_id;
 	uint32_t i;
 	uint64_t attr_uc = (EPT_RWX | EPT_UNCACHED);
-	uint64_t hv_hpa;
+	//uint64_t hv_hpa;
 	struct acrn_vm_config *vm_config;
 	uint64_t *pml4_page = (uint64_t *)vm->arch_vm.nworld_eptp;
 	struct epc_section* epc_secs;
@@ -369,8 +369,8 @@ static void prepare_sos_vm_memmap(struct acrn_vm *vm)
 	/* unmap hypervisor itself for safety
 	 * will cause EPT violation if sos accesses hv memory
 	 */
-	hv_hpa = hva2hpa((void *)(get_hv_image_base()));
-	ept_del_mr(vm, pml4_page, hv_hpa, CONFIG_HV_RAM_SIZE);
+	//hv_hpa = hva2hpa((void *)(get_hv_image_base()));
+	//ept_del_mr(vm, pml4_page, hv_hpa, CONFIG_HV_RAM_SIZE);
 	/* unmap prelaunch VM memory */
 	for (vm_id = 0U; vm_id < CONFIG_MAX_VM_NUM; vm_id++) {
 		vm_config = get_vm_config(vm_id);

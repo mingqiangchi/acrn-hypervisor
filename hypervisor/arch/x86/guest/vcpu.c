@@ -431,6 +431,28 @@ int32_t create_vcpu(uint16_t pcpu_id, struct acrn_vm *vm, struct acrn_vcpu **rtn
 	return ret;
 }
 
+void guest_test_code(void)
+{
+	asm volatile("deadloop:");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("movl $0xaaaa, %eax");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("movl $0xcccc, %eax");
+	asm volatile("jmp deadloop");
+
+}
+
+
 /*
  *  @pre vcpu != NULL
  */
@@ -471,7 +493,7 @@ int32_t run_vcpu(struct acrn_vcpu *vcpu)
 
 	/* If this VCPU is not already launched, launch it */
 	if (!vcpu->launched) {
-		pr_info("VM %d Starting VCPU %hu",
+		pr_err("VM %d Starting VCPU %hu",
 				vcpu->vm->vm_id, vcpu->vcpu_id);
 
 		if (vcpu->arch.vpid != 0U)
@@ -501,13 +523,18 @@ int32_t run_vcpu(struct acrn_vcpu *vcpu)
 		/*Mitigation for MDS vulnerability, overwrite CPU internal buffers */
 		cpu_internal_buffers_clear();
 
+		exec_vmwrite(VMX_GUEST_RIP, (uint64_t)guest_test_code);
+
+		pr_err("guest rip = 0x%llx\r\n", exec_vmread64(VMX_GUEST_RIP));
+
 		/* Launch the VM */
 		status = vmx_vmrun(ctx, VM_LAUNCH, ibrs_type);
+		pr_err("vm launch status = 0x%llx\r\n", status);
 
 		/* See if VM launched successfully */
 		if (status == 0) {
 			if (is_vcpu_bsp(vcpu)) {
-				pr_info("VM %d VCPU %hu successfully launched",
+				pr_err("VM %d VCPU %hu successfully launched",
 					vcpu->vm->vm_id, vcpu->vcpu_id);
 			}
 		}
@@ -527,6 +554,7 @@ int32_t run_vcpu(struct acrn_vcpu *vcpu)
 		cpu_internal_buffers_clear();
 
 		/* Resume the VM */
+		//pr_err("vm_resume :guest rip = 0x%llx\r\n", exec_vmread64(VMX_GUEST_RIP));
 		status = vmx_vmrun(ctx, VM_RESUME, ibrs_type);
 	}
 

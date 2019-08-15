@@ -56,6 +56,8 @@ static void enter_guest_mode(uint16_t pcpu_id)
 
 	(void)launch_vms(pcpu_id);
 
+	pr_err("swith to idle pcpu_id = 0x%llx\r\n", pcpu_id);
+
 	switch_to_idle(default_idle);
 
 	/* Control should not come here */
