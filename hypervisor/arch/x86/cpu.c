@@ -228,8 +228,6 @@ void init_pcpu_post(uint16_t pcpu_id)
 			panic("failed to initialize iommu!");
 		}
 
-		ptdev_init();
-
 		if (init_sgx() != 0) {
 			panic("failed to initialize sgx!");
 		}

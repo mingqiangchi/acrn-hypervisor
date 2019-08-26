@@ -13,7 +13,7 @@
 #define PTIRQ_BITMAP_ARRAY_SIZE	INT_DIV_ROUNDUP(CONFIG_MAX_PT_IRQ_ENTRIES, 64U)
 struct ptirq_remapping_info ptirq_entries[CONFIG_MAX_PT_IRQ_ENTRIES];
 static uint64_t ptirq_entry_bitmaps[PTIRQ_BITMAP_ARRAY_SIZE];
-spinlock_t ptdev_lock;
+spinlock_t ptdev_lock = { .head = 0U, .tail = 0U };
 
 static inline uint16_t ptirq_alloc_entry_id(void)
 {
@@ -175,11 +175,7 @@ void ptirq_deactivate_entry(struct ptirq_remapping_info *entry)
 
 void ptdev_init(void)
 {
-	if (get_pcpu_id() == BOOT_CPU_ID) {
-
-		spinlock_init(&ptdev_lock);
-		register_softirq(SOFTIRQ_PTDEV, ptirq_softirq);
-	}
+	register_softirq(SOFTIRQ_PTDEV, ptirq_softirq);
 }
 
 void ptdev_release_all_entries(const struct acrn_vm *vm)

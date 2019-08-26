@@ -205,6 +205,7 @@ void start_vm(struct acrn_vm *vm);
 int32_t reset_vm(struct acrn_vm *vm);
 int32_t create_vm(uint16_t vm_id, struct acrn_vm_config *vm_config, struct acrn_vm **rtn_vm);
 void prepare_vm(uint16_t vm_id, struct acrn_vm_config *vm_config);
+void launch_vms_pre(void);
 void launch_vms(uint16_t pcpu_id);
 bool is_poweroff_vm(const struct acrn_vm *vm);
 bool is_created_vm(const struct acrn_vm *vm);
