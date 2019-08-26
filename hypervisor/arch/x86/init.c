@@ -54,6 +54,8 @@ static void enter_guest_mode(uint16_t pcpu_id)
 {
 	vmx_on();
 
+	launch_vms_pre();
+
 	launch_vms(pcpu_id);
 
 	switch_to_idle(default_idle);

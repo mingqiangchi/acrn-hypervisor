@@ -140,7 +140,8 @@ extern struct ptirq_remapping_info ptirq_entries[CONFIG_MAX_PT_IRQ_ENTRIES];
 extern spinlock_t ptdev_lock;
 
 void ptirq_softirq(uint16_t pcpu_id);
-void ptdev_init(void);
+void ptdev_init_list(void);
+void ptdev_register_softirq(void);
 void ptdev_release_all_entries(const struct acrn_vm *vm);
 
 struct ptirq_remapping_info *ptirq_dequeue_softirq(uint16_t pcpu_id);

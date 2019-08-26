@@ -21,7 +21,6 @@
 #include <version.h>
 #include <vmx.h>
 #include <msr.h>
-#include <ptdev.h>
 #include <ld_sym.h>
 #include <logmsg.h>
 #include <cat.h>
@@ -232,8 +231,6 @@ void init_pcpu_post(uint16_t pcpu_id)
 			panic("failed to initialize iommu!");
 		}
 
-		ptdev_init();
-
 		if (init_sgx() != 0) {
 			panic("failed to initialize sgx!");
 		}
@@ -252,7 +249,6 @@ void init_pcpu_post(uint16_t pcpu_id)
 		init_interrupt(pcpu_id);
 
 		timer_init();
-		ptdev_init();
 
 		/* Wait for boot processor to signal all secondary cores to continue */
 		wait_sync_change(&pcpu_sync, 0UL);

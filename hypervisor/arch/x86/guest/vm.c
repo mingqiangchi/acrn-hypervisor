@@ -41,6 +41,9 @@ static struct acrn_vm *sos_vm_ptr = NULL;
 
 static struct e820_entry sos_ve820[E820_MAX_ENTRIES];
 
+static bool vms_pre_initialized;
+static spinlock_t launch_vms_pre_lock = { .head = 0U, .tail = 0U };
+
 uint16_t get_vmid_by_uuid(const uint8_t *uuid)
 {
 	uint16_t vm_id = 0U;
@@ -757,6 +760,20 @@ void prepare_vm(uint16_t vm_id, struct acrn_vm_config *vm_config)
 
 		pr_acrnlog("Start VM id: %x name: %s", vm_id, vm_config->name);
 	}
+}
+
+void launch_vms_pre(void)
+{
+	/* all cores need the list init */
+	ptdev_init_list();
+
+	/* only need to initialize one time for all VMs before launch VMs */
+	spinlock_obtain(&launch_vms_pre_lock);
+	if (!vms_pre_initialized) {
+		ptdev_register_softirq();
+		vms_pre_initialized = true;
+	}
+	spinlock_release(&launch_vms_pre_lock);
 }
 
 /**
