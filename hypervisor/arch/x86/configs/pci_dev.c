@@ -78,3 +78,15 @@ void fill_pci_dev_config(struct pci_pdev *pdev)
 		}
 	}
 }
+
+void assign_pci_phy_devs(void)
+{
+	uint32_t pci_pdev_idx;
+
+	uint32_t pci_pdev_num = get_pci_pdev_nums();
+	struct pci_pdev *pci_phy_dev = get_pci_pdev_array();
+
+	for (pci_pdev_idx = 0U; pci_pdev_idx < pci_pdev_num; pci_pdev_idx++) {
+		fill_pci_dev_config(&pci_phy_dev[pci_pdev_idx]);
+	}
+}

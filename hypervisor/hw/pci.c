@@ -314,8 +314,6 @@ static void fill_pdev(uint16_t pbdf, struct pci_pdev *pdev)
 	if ((pci_pdev_read_cfg(pdev->bdf, PCIR_STATUS, 2U) & PCIM_STATUS_CAPPRESENT) != 0U) {
 		pci_read_cap(pdev, hdr_type);
 	}
-
-	fill_pci_dev_config(pdev);
 }
 
 static void init_pdev(uint16_t pbdf)
@@ -326,4 +324,14 @@ static void init_pdev(uint16_t pbdf)
 	} else {
 		pr_err("%s, failed to alloc pci_pdev!\n", __func__);
 	}
+}
+
+uint32_t get_pci_pdev_nums(void)
+{
+	return num_pci_pdev;
+}
+
+struct pci_pdev *get_pci_pdev_array(void)
+{
+	return pci_pdev_array;
 }
