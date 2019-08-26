@@ -310,6 +310,8 @@ void pci_pdev_write_cfg(union pci_bdf bdf, uint32_t offset, uint32_t bytes, uint
 void enable_disable_pci_intx(union pci_bdf bdf, bool enable);
 
 void init_pci_pdev_list(void);
+uint32_t get_pci_pdev_nums(void);
+struct pci_pdev *get_pci_pdev_array(void);
 
 
 #endif /* PCI_H_ */

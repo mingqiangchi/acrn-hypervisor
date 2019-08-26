@@ -763,6 +763,7 @@ void launch_vms_pre(void)
 	spinlock_obtain(&launch_vms_pre_lock);
 	if (!vms_pre_initialized) {
 		ptdev_init();
+		assign_pci_phy_devs();
 		vms_pre_initialized = true;
 	}
 	spinlock_release(&launch_vms_pre_lock);
