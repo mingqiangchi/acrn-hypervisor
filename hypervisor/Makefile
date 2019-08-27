@@ -208,12 +208,7 @@ HW_C_SRCS += arch/x86/cat.c
 HW_C_SRCS += common/softirq.c
 HW_C_SRCS += common/schedule.c
 HW_C_SRCS += hw/pci.c
-HW_C_SRCS += arch/x86/configs/vm_config.c
 HW_C_SRCS += arch/x86/configs/$(CONFIG_BOARD)/board.c
-HW_C_SRCS += scenarios/$(SCENARIO_NAME)/vm_configurations.c
-ifneq (,$(wildcard scenarios/$(SCENARIO_NAME)/pci_dev.c))
-HW_C_SRCS += scenarios/$(SCENARIO_NAME)/pci_dev.c
-endif
 HW_C_SRCS += boot/acpi_base.c
 HW_C_SRCS += boot/dmar_info.c
 HW_C_SRCS += boot/cmdline.c
@@ -248,6 +243,8 @@ VP_BASE_C_SRCS += common/vm_load.c
 VP_BASE_C_SRCS += arch/x86/configs/pci_dev.c
 VP_BASE_C_SRCS += arch/x86/configs/vacpi.c
 VP_BASE_C_SRCS += arch/x86/configs/$(CONFIG_BOARD)/ve820.c
+VP_BASE_C_SRCS += arch/x86/configs/vm_config.c
+VP_BASE_C_SRCS += scenarios/$(SCENARIO_NAME)/vm_configurations.c
 
 # virtual platform device model
 VP_DM_C_SRCS += dm/vpic.c
@@ -267,6 +264,10 @@ VP_DM_C_SRCS += arch/x86/guest/assign.c
 VP_DM_C_SRCS += arch/x86/guest/vmx_io.c
 VP_DM_C_SRCS += arch/x86/guest/instr_emul.c
 VP_DM_C_SRCS += arch/x86/guest/vm_reset.c
+ifneq (,$(wildcard scenarios/$(SCENARIO_NAME)/pci_dev.c))
+VP_DM_C_SRCS += scenarios/$(SCENARIO_NAME)/pci_dev.c
+endif
+
 VP_DM_C_SRCS += common/ptdev.c
 
 # virtual platform trusty

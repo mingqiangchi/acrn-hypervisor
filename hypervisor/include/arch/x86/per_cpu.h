@@ -17,7 +17,6 @@
 #include <gdt.h>
 #include <schedule.h>
 #include <security.h>
-#include <vm_config.h>
 
 struct per_cpu_region {
 	/* vmxon_region MUST be 4KB-aligned */
