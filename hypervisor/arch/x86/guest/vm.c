@@ -762,6 +762,10 @@ void launch_vms_pre(void)
 	/* only need to initialize one time for all VMs before launch VMs */
 	spinlock_obtain(&launch_vms_pre_lock);
 	if (!vms_pre_initialized) {
+
+		if (init_sgx() != 0) {
+			panic("failed to initialize sgx!");
+		}
 		ptdev_init();
 		assign_pci_phy_devs();
 		vms_pre_initialized = true;

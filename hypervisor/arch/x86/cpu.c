@@ -25,7 +25,6 @@
 #include <logmsg.h>
 #include <cat.h>
 #include <vboot.h>
-#include <sgx.h>
 #include <uart16550.h>
 
 #define CPU_UP_TIMEOUT		100U /* millisecond */
@@ -226,10 +225,6 @@ void init_pcpu_post(uint16_t pcpu_id)
 
 		if (init_iommu() != 0) {
 			panic("failed to initialize iommu!");
-		}
-
-		if (init_sgx() != 0) {
-			panic("failed to initialize sgx!");
 		}
 
 		/* Start all secondary cores */
