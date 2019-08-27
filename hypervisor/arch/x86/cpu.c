@@ -20,7 +20,6 @@
 #include <cpuid.h>
 #include <version.h>
 #include <vmx.h>
-#include <vm.h>
 #include <ld_sym.h>
 #include <logmsg.h>
 #include <cat.h>
@@ -202,10 +201,6 @@ void init_pcpu_post(uint16_t pcpu_id)
 		pr_acrnlog("Detect processor: %s", (get_pcpu_info())->model_name);
 
 		pr_dbg("Core %hu is up", BOOT_CPU_ID);
-
-		if (!sanitize_vm_config()) {
-			panic("VM Configuration Error!");
-		}
 
 		/* Warn for security feature not ready */
 		if (!check_cpu_security_cap()) {

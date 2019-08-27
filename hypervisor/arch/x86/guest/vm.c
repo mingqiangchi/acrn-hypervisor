@@ -763,6 +763,10 @@ void launch_vms_pre(void)
 	spinlock_obtain(&launch_vms_pre_lock);
 	if (!vms_pre_initialized) {
 
+		if (!sanitize_vm_config()) {
+			panic("VM Configuration Error!");
+		}
+
 		if (init_sgx() != 0) {
 			panic("failed to initialize sgx!");
 		}
