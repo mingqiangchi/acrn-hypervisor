@@ -15,7 +15,6 @@
 #include <cpu_caps.h>
 #include <errno.h>
 #include <logmsg.h>
-#include <vmcs.h>
 
 /* TODO: add more capability per requirement */
 /* APICv features */
@@ -176,7 +175,6 @@ static void detect_apicv_cap(void)
 
 	cpu_caps.apicv_features = features;
 
-	vlapic_set_apicv_ops();
 }
 
 static void detect_vmx_mmu_cap(void)

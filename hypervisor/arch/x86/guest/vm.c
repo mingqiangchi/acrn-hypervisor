@@ -763,6 +763,7 @@ void launch_vms_pre(void)
 	spinlock_obtain(&launch_vms_pre_lock);
 	if (!vms_pre_initialized) {
 
+		vlapic_set_apicv_ops();
 		if (!sanitize_vm_config()) {
 			panic("VM Configuration Error!");
 		}
