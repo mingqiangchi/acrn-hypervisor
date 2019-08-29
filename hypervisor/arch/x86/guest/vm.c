@@ -772,6 +772,7 @@ void launch_vms_pre(void)
 	if (!vms_pre_initialized) {
 		ptdev_register_softirq();
 		assign_pci_phy_devs();
+		vlapic_set_apicv_ops();
 		vms_pre_initialized = true;
 	}
 	spinlock_release(&launch_vms_pre_lock);
